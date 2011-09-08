@@ -20,7 +20,7 @@ class ConversionGraph extends SimpleGraph {
   function __construct(){
     $this->regexes = array(
       'datatypes' => array(
-        XSDT.'integer' => '/^\d+$/',
+        XSDT.'integer' => '/^-?\d+$/',
         XSDT.'float' => '/^\d+\.\d+$/',
         XSDT.'decimal' => '/^\d+(\.\d+)?$/',
       ),
@@ -155,7 +155,7 @@ class ConversionGraph extends SimpleGraph {
 
   function check_against_class_partitions($s, $p, $o){
     if($p!=RDF_TYPE) return false ;
-    $g = $this->dataset_description_graph;
+    if(!$g = $this->dataset_description_graph) return false;
     $partitions = $g->get_resource_triple_values($this->dataset_uri, VOID.'classPartition') ;
     if(empty($partitions)) return false;
     foreach($partitions as $class_partition){
